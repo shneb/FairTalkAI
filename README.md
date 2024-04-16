@@ -1,4 +1,4 @@
-# FairTalkAI - Django & Next.js boilerplate <!-- omit from toc -->
+# FairTalkAI - Django & Next.js <!-- omit from toc -->
 
 FairTalkAI is a simple bootstrap template for Django and Next.js, combining both frameworks under one monorepository, including best practices.
 
@@ -241,4 +241,5 @@ By default, FairTalkAI includes Swagger for API schema which is available here `
 ### Client side requests
 
 At the moment, FairTalkAI does not contain any examples of client side requests towards the backend. All the requests are handled by server actions. For client side requests, it is recommended to use [react-query](https://github.com/TanStack/query).
+
 # FairTalkAI
