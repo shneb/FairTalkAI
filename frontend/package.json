@@ -1,22 +1,42 @@
 {
-  "name": "frontend",
+  "name": "fairtalkai-web",
   "version": "0.1.0",
   "private": true,
-  "sideEffects": false,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "openapi:generate": "openapi -i http://localhost:8000/api/schema -o packages/types/api --name ApiClient"
+  },
   "dependencies": {
-    "react": "18.2.0",
-    "react-dom": "^18.2.0"
+    "@hookform/resolvers": "^3.3.3",
+    "@radix-ui/react-dropdown-menu": "^2.0.6",
+    "@radix-ui/react-slot": "^1.0.2",
+    "@tabler/icons-react": "^2.40.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.0",
+    "lucide-react": "^0.370.0",
+    "next": "14.2.1",
+    "next-auth": "^4.24.5",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hook-form": "^7.49.2",
+    "tailwind-merge": "^2.2.2",
+    "tailwindcss-animate": "^1.0.7",
+    "zod": "^3.22.3"
   },
   "devDependencies": {
-    "@types/node": "^20.10.5",
-    "@types/react": "^18.2.45",
-    "@types/react-dom": "^18.2.18",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.1",
     "openapi-typescript-codegen": "^0.25.0",
+    "postcss": "^8",
     "prettier": "^3.1.1",
     "prettier-plugin-tailwindcss": "^0.5.9",
-    "typescript": "^5.3.3"
-  },
-  "scripts": {
-    "openapi:generate": "openapi -i http://localhost:8000/api/schema -o packages/types/api --name ApiClient"
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
   }
 }
