@@ -16,6 +16,7 @@ const decodeToken = (
 }
 
 const authOptions: AuthOptions = {
+  debug: true,
   session: {
     strategy: 'jwt'
   },
@@ -77,6 +78,7 @@ const authOptions: AuthOptions = {
           return null
         }
 
+        console.log('gg auth.tsx')
         try {
           const apiClient = await getApiClient()
           const res = await apiClient.token.tokenCreate({
@@ -85,7 +87,6 @@ const authOptions: AuthOptions = {
             access: '',
             refresh: ''
           })
-
           return {
             id: decodeToken(res.access).user_id,
             username: credentials.username,

@@ -2,9 +2,7 @@ import { AuthProvider } from '@/providers/AuthProvider'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { Navbar } from '../components/Layout/Navbar'
 import ReactQueryProvider from '../providers/ReactQueryProvider'
-import SideBar from '../components/sidebar/SideBar'
 
 const inter = Inter({ subsets: ['latin'] })
 

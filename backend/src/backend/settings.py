@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "drf_spectacular",
     "backend",
-    # "chatbot",
     'chatapp',
 
 ]

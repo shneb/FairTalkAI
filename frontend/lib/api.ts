@@ -3,7 +3,7 @@ import { Session } from 'next-auth'
 
 const getApiClient = async (session?: Session | null) => {
   return new ApiClient({
-    BASE: "",
+    BASE: process.env.API_URL,
     HEADERS: {
       ...(session && {
         Authorization: `Bearer ${session.accessToken}`
