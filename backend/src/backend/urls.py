@@ -12,6 +12,7 @@ from .api import UserViewSet
 router = routers.DefaultRouter()
 router.register("users", UserViewSet, basename="api-users")
 
+
 urlpatterns = [
     path(
         "api/schema/swagger-ui/",

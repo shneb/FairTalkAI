@@ -61,7 +61,6 @@ class UserViewSet(
     )
     @action(["get", "put", "patch"], detail=False)
     def me(self, request, *args, **kwargs):
-        print(request)
         if request.method == "GET":
             serializer = self.get_serializer(self.request.user)
             return Response(serializer.data)
