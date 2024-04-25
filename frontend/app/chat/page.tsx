@@ -1,9 +1,5 @@
 import Head from 'next/head'
-import PagesOverview from '@/components/PagesOverview'
-import UserSession from '@/components/UserSession'
-
 import HomePage from '@/components/HomePage'
-import { getSession, GetSessionParams } from 'next-auth/react'
 
 const Home = () => {
   return (
@@ -18,11 +14,6 @@ const Home = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <HomePage />
-
-      {/* <UserSession /> */}
-      {/* <hr className="my-8" />
-
-      <PagesOverview /> */}
     </>
   )
 }

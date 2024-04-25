@@ -1,19 +1,21 @@
 'use-client'
 
-import { Message } from '@/types'
 import { IconArrowUp } from '@tabler/icons-react'
 import { FC, KeyboardEvent, useEffect, useRef, useState } from 'react'
+import { Message, RoleEnum } from '../../packages/types/api'
+import { Input } from '../ui/input'
+import { Button } from '../ui/button'
 
 interface Props {
-  onSend: (message: Message) => void
+  onSend?: (message: Message) => void
 }
 
 export const ChatInput: FC<Props> = ({ onSend }) => {
   const [content, setContent] = useState<string>()
 
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const textareaRef = useRef<HTMLInputElement>(null)
 
-  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value
     if (value.length > 4000) {
       alert('Message limit is 4000 characters')
@@ -23,19 +25,19 @@ export const ChatInput: FC<Props> = ({ onSend }) => {
     setContent(value)
   }
 
-  const handleSend = () => {
-    if (!content) {
-      alert('Please enter a message')
-      return
-    }
-    onSend({ role: 'user', content })
-    setContent('')
-  }
+  // const handleSend = () => {
+  //   if (!content) {
+  //     alert('Please enter a message')
+  //     return
+  //   }
+  //   onSend({ role: RoleEnum.USER, content })
+  //   setContent('')
+  // }
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
-      handleSend()
+      // handleSend()
     }
   }
 
@@ -47,21 +49,34 @@ export const ChatInput: FC<Props> = ({ onSend }) => {
   }, [content])
 
   return (
-    <div className="relative">
-      <textarea
-        ref={textareaRef}
-        className="min-h-[44px] rounded-lg pl-4 pr-12 py-2 w-full focus:outline-none focus:ring-1 focus:ring-neutral-300 border-2 border-neutral-200"
+    <div className="min-h-[44px] bg-white dark:bg-gray-800 rounded-lg p-4 flex gap-4">
+      <Input
+        className="flex-1"
+        placeholder="Type your message..."
         style={{ resize: 'none' }}
-        placeholder="Type a message..."
         value={content}
-        rows={1}
+        ref={textareaRef}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
+        type="text"
       />
-
-      <button onClick={() => handleSend()}>
-        <IconArrowUp className="absolute right-2 bottom-3 h-8 w-8 hover:cursor-pointer rounded-full p-1 bg-blue-500 text-white hover:opacity-80" />
-      </button>
+      <Button>Send</Button>
     </div>
+    // <div className="relative">
+    //   <textarea
+    //     ref={textareaRef}
+    //     className="min-h-[44px] rounded-lg pl-4 pr-12 py-2 w-full focus:outline-none focus:ring-1 focus:ring-neutral-300 border-2 border-neutral-200"
+    //     style={{ resize: 'none' }}
+    //     placeholder="Type a message..."
+    //     value={content}
+    //     rows={1}
+    //     onChange={handleChange}
+    //     onKeyDown={handleKeyDown}
+    //   />
+
+    //   <button>
+    //     <IconArrowUp className="absolute right-2 bottom-3 h-8 w-8 hover:cursor-pointer rounded-full p-1 bg-blue-500 text-white hover:opacity-80" />
+    //   </button>
+    // </div>
   )
 }

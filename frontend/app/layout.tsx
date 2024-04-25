@@ -3,9 +3,8 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Navbar } from '../components/Layout/Navbar'
-import { redirect } from 'next/navigation'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
+import ReactQueryProvider from '../providers/ReactQueryProvider'
+import SideBar from '../components/sidebar/SideBar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,28 +13,12 @@ export const metadata: Metadata = {
 }
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
-  // const session = await getServerSession(authOptions)
-
-  // if (session === null) {
-  //   return redirect('/login')
-  // }
-
   return (
     <html lang="en">
-      <body
-        className={
-          'antialiased bg-gray-50 text-gray-700 text-sm ' + inter.className
-        }
-      >
-        <AuthProvider>
-          <div className="px-6">
-            <div className="container max-w-6xl my-12 mx-auto">
-              <Navbar />
-              {children}
-              {/* <Footer /> */}
-            </div>
-          </div>
-        </AuthProvider>
+      <body className={inter.className}>
+        <ReactQueryProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </ReactQueryProvider>
       </body>
     </html>
   )

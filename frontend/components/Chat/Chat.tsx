@@ -1,14 +1,14 @@
-import { Message } from '@/types'
 import { FC } from 'react'
 import { ChatInput } from './ChatInput'
 import { ChatLoader } from './ChatLoader'
 import { ChatMessage } from './ChatMessage'
 import { ResetChat } from './ResetChat'
+import { Message } from '../../packages/types/api'
 
 interface Props {
   messages: Message[]
   loading: boolean
-  onSend: (message: Message) => void
+  onSend?: (message: Message) => void
   onReset: () => void
 }
 
@@ -19,7 +19,7 @@ export const Chat: FC<Props> = ({ messages, loading, onSend, onReset }) => {
         <ResetChat onReset={onReset} />
       </div>
 
-      <div className="h-full flex flex-col justify-end rounded-lg px-2 sm:p-4 sm:border border-neutral-300">
+      <div className="h-full flex flex-col justify-end rounded-lg ">
         {messages.map((message, index) => (
           <div key={index} className="my-1 sm:my-1.5">
             <ChatMessage message={message} />

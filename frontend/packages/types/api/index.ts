@@ -10,7 +10,10 @@ export { CancelablePromise, CancelError } from './core/CancelablePromise';
 export { OpenAPI } from './core/OpenAPI';
 export type { OpenAPIConfig } from './core/OpenAPI';
 
+export type { Bias } from './models/Bias';
+export type { Message } from './models/Message';
 export type { PatchedUserCurrent } from './models/PatchedUserCurrent';
+export { RoleEnum } from './models/RoleEnum';
 export type { TokenObtainPair } from './models/TokenObtainPair';
 export type { TokenRefresh } from './models/TokenRefresh';
 export type { UserChangePassword } from './models/UserChangePassword';
@@ -20,6 +23,7 @@ export type { UserCreateError } from './models/UserCreateError';
 export type { UserCurrent } from './models/UserCurrent';
 export type { UserCurrentError } from './models/UserCurrentError';
 
+export { ChatsService } from './services/ChatsService';
 export { SchemaService } from './services/SchemaService';
 export { TokenService } from './services/TokenService';
 export { UsersService } from './services/UsersService';

@@ -6,6 +6,7 @@ import type { BaseHttpRequest } from './core/BaseHttpRequest';
 import type { OpenAPIConfig } from './core/OpenAPI';
 import { FetchHttpRequest } from './core/FetchHttpRequest';
 
+import { ChatsService } from './services/ChatsService';
 import { SchemaService } from './services/SchemaService';
 import { TokenService } from './services/TokenService';
 import { UsersService } from './services/UsersService';
@@ -14,6 +15,7 @@ type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 
 export class ApiClient {
 
+    public readonly chats: ChatsService;
     public readonly schema: SchemaService;
     public readonly token: TokenService;
     public readonly users: UsersService;
@@ -33,6 +35,7 @@ export class ApiClient {
             ENCODE_PATH: config?.ENCODE_PATH,
         });
 
+        this.chats = new ChatsService(this.request);
         this.schema = new SchemaService(this.request);
         this.token = new TokenService(this.request);
         this.users = new UsersService(this.request);
