@@ -1,7 +1,8 @@
-from django.urls import path
-from .views import ChatListCreateAPIView, MessageListCreateAPIView
+from rest_framework.routers import DefaultRouter
+from .views import ChatViewSet, MessageViewSet
 
-urlpatterns = [
-    path('/', ChatListCreateAPIView.as_view(), name='chat-list-create'),
-    path('/<uuid:chat_id>/messages/', MessageListCreateAPIView.as_view(), name='message-list-create'),
-]
+router = DefaultRouter()
+router.register(r'chats', ChatViewSet, basename='chats')
+router.register(r'chats/(?P<chat_id>\d+)/messages', MessageViewSet, basename='messages')
+
+urlpatterns = router.urls

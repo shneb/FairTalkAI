@@ -9,7 +9,7 @@ def estimate_bias(text):
     Analyze the following text for any potential ethical biases and provide a detailed bias report:
     Text: "{text}"
     Please respond in the following format:
-    - Score (0%-100%): [Bias Score]
+    - Score (0-100): [Bias Score]
     - Bias Type: [Type of bias, e.g., gender, age, racial]
     - Description: [Short explanation of the bias, max 100 characters]
     """

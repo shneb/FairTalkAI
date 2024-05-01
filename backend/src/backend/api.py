@@ -5,6 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
+
 from .serializers import (
     UserChangePasswordErrorSerializer,
     UserChangePasswordSerializer,
@@ -15,6 +16,7 @@ from .serializers import (
 )
 
 User = get_user_model()
+
 
 
 class UserViewSet(
@@ -99,3 +101,4 @@ class UserViewSet(
     def delete_account(self, request, *args, **kwargs):
         self.request.user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    

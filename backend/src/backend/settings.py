@@ -11,10 +11,10 @@ from django.utils.translation import gettext_lazy as _
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = environ.get("SECRET_KEY", get_random_secret_key())
+# environ.get("DEBUG", "") ==
+DEBUG =  True
 
-DEBUG = environ.get("DEBUG", "") == "1"
-
-ALLOWED_HOSTS = ["localhost", "api",]
+ALLOWED_HOSTS = ['*']
 
 WSGI_APPLICATION = "backend.wsgi.application"
 
@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "backend",
     'chatapp',
-
 ]
 
 ######################################################################

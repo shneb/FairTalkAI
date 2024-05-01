@@ -29,12 +29,29 @@ function SideBar({ children }: { children: React.ReactNode }) {
 
   const router = useRouter()
 
-  const getChats = async () => {
-    const apiClient = await getApiClient(session.data)
+  //   const apiClient = await getApiClient(sess=ion.data)
 
-    const response = apiClient.chats.chatsRetrieve()
-    console.log(response)
-    return response
+  //   const response = apiClient.chats.chatsRetrieve()
+  //   console.log(response)
+  //   return response
+  const getChats = async () => {
+    try {
+      const apiClient = await getApiClient(session.data)
+
+      const response = apiClient.api.apiChatsRetrieve()
+
+      // const response = await fetch('http://localhost:8000/', {
+      //   method: 'get',
+      //   headers: new Headers({
+      //     Authorization: 'Bearer ' + session.data?.accessToken,
+      //     'Cross-Origin-Opener-Policy': 'unsafe-none'
+      //   })
+      // })
+      console.log(response)
+      return response
+    } catch (e) {
+      console.log(e)
+    }
   }
   getChats()
   return (

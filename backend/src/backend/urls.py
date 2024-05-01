@@ -7,13 +7,16 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from .api import UserViewSet
+from .views import Home
+
+from .api import  UserViewSet
 
 router = routers.DefaultRouter()
 router.register("users", UserViewSet, basename="api-users")
 
 
 urlpatterns = [
+    path('', Home.as_view(), name='home'),
     path(
         "api/schema/swagger-ui/",
         SpectacularSwaggerView.as_view(url_name="schema"),
@@ -25,3 +28,4 @@ urlpatterns = [
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("admin/", admin.site.urls),
 ]
+

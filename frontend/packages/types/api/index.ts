@@ -23,7 +23,5 @@ export type { UserCreateError } from './models/UserCreateError';
 export type { UserCurrent } from './models/UserCurrent';
 export type { UserCurrentError } from './models/UserCurrentError';
 
-export { ChatsService } from './services/ChatsService';
-export { SchemaService } from './services/SchemaService';
-export { TokenService } from './services/TokenService';
-export { UsersService } from './services/UsersService';
+export { ApiService } from './services/ApiService';
+export { DefaultService } from './services/DefaultService';
