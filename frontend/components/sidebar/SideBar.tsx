@@ -17,7 +17,6 @@ import useGetChats from '../../services/qeueries/useChats'
 import { useRouter } from 'next/navigation'
 import { ChatListRead } from '../../packages/types/api'
 import { LoadingSpinner } from '../ui/loadingSpinner'
-import { randomUUID as uuidv4 } from 'crypto'
 
 const userNavigation = [
   { name: 'Profile', href: '/profile' },
@@ -38,18 +37,21 @@ function SideBar({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!chatsData || isLoading) return
 
-    createChat()
     setChats(chatsData)
-  }, [chatsData, isLoading])
+  }, [chatsData])
 
   const createChat = () => {
     if (!chats.find((item) => item.id === 9999)) {
-      chats.push({
-        id: 9999,
-        title: 'New new chat',
-        updated_at: ''
-      })
+      setChats([
+        {
+          id: 9999,
+          title: 'New new chat',
+          updated_at: ''
+        },
+        ...chats
+      ])
     }
+    console.log(chats)
   }
 
   return (
@@ -187,15 +189,10 @@ function SideBar({ children }: { children: React.ReactNode }) {
                     role="list"
                     className="rounded-lg scroll-shadows flex flex-col gap-3 overflow-y-auto h-[60vh]"
                   >
-                    {isLoading || !chatsData ? (
-                      <div className="flex w-full justify-center h-full items-center">
-                        <LoadingSpinner />
-                      </div>
-                    ) : (
+                    {chats && !isLoading ? (
                       chats.map((item) => (
                         <li className="w-full" key={item.id}>
                           <Button
-                            onClick={() => router.push(`/chat/${item.id}`)}
                             className="w-full flex justify-between"
                             variant="secondary"
                           >
@@ -204,6 +201,10 @@ function SideBar({ children }: { children: React.ReactNode }) {
                           </Button>
                         </li>
                       ))
+                    ) : (
+                      <div className="flex w-full justify-center h-full items-center">
+                        <LoadingSpinner />
+                      </div>
                     )}
                   </ul>
                 </li>
