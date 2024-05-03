@@ -3,7 +3,7 @@
 import { z } from 'zod'
 import { changePasswordFormSchema } from '@/lib/validation'
 import { ApiError, UserChangePasswordError } from '@/packages/types/api'
-import { getApiClient } from '@/lib/api'
+import { getApiClient } from '@/services/service'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 

@@ -1,6 +1,6 @@
 import { profileAction } from '@/actions/profileAction'
 import ProfileForm from '@/components/forms/ProfileForm'
-import { getApiClient } from '@/lib/api'
+import { getApiClient } from '@/services/service'
 import { authOptions } from '@/lib/auth'
 import { Metadata } from 'next'
 import { getServerSession } from 'next-auth'

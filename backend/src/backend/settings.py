@@ -16,6 +16,8 @@ DEBUG =  True
 
 ALLOWED_HOSTS = ['*']
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 WSGI_APPLICATION = "backend.wsgi.application"
 
 ROOT_URLCONF = "backend.urls"
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "backend",
     'chatapp',
+    'corsheaders',
 ]
 
 ######################################################################
@@ -51,6 +54,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ######################################################################

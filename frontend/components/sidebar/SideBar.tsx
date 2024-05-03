@@ -14,7 +14,7 @@ import clsx from 'clsx'
 import { signOut, useSession } from 'next-auth/react'
 import { Button } from '../ui/button'
 import { useRouter } from 'next/navigation'
-import { getApiClient } from '../../lib/api'
+import axios from 'axios'
 
 const userNavigation = [
   { name: 'Profile', href: '/profile' },
@@ -36,18 +36,16 @@ function SideBar({ children }: { children: React.ReactNode }) {
   //   return response
   const getChats = async () => {
     try {
-      const apiClient = await getApiClient(session.data)
+      // const apiClient = await getApiClient(session.data)
 
-      const response = apiClient.api.apiChatsRetrieve()
+      // const response = apiClient.api.apiChatsRetrieve()
 
-      // const response = await fetch('http://localhost:8000/', {
-      //   method: 'get',
-      //   headers: new Headers({
-      //     Authorization: 'Bearer ' + session.data?.accessToken,
-      //     'Cross-Origin-Opener-Policy': 'unsafe-none'
-      //   })
-      // })
-      console.log(response)
+      const response = await axios.get('http://localhost:8080/', {
+        headers: {
+          Authorization: 'Bearer ' + session.data?.accessToken
+        }
+      })
+      console.log(response.data)
       return response
     } catch (e) {
       console.log(e)

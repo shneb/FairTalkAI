@@ -1,18 +1,21 @@
 import { useQuery } from '@tanstack/react-query'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../lib/auth'
-import { getApiClient } from '../../lib/api'
+import { getApiClient } from '../service'
 
 const useGetChats = () => {
   const getChats = async () => {
     const session = await getServerSession(authOptions)
+    console.log(session, authOptions, 'gg')
     const apiClient = await getApiClient(session)
 
-    return apiClient.chats.chatsRetrieve()
+    const response = apiClient.chats.chatsRetrieve()
+    console.log(response)
+    return response
   }
 
   return useQuery({
-    queryKey: ['chat'],
+    queryKey: ['chats'],
     queryFn: getChats
   })
 }

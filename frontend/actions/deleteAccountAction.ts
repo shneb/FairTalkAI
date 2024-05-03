@@ -1,6 +1,6 @@
 'use server'
 
-import { getApiClient } from '@/lib/api'
+import { getApiClient } from '@/services/service'
 import { authOptions } from '@/lib/auth'
 import { deleteAccountFormSchema } from '@/lib/validation'
 import { ApiError } from '@/packages/types/api'

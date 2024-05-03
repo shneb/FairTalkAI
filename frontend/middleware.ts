@@ -4,15 +4,15 @@ import { NextRequest, NextResponse } from 'next/server'
 const publicPaths: string[] = ['/login', '/register']
 
 export async function middleware(req: NextRequest) {
-  const url = req.nextUrl.clone()
-  const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
+  // const url = req.nextUrl.clone()
+  // const session = await getToken({ req, secret: process.env.NEXTAUTH_SECRET })
 
-  // console.log(session)
+  // // console.log(session)
 
-  if (!session && !publicPaths.includes(url.pathname)) {
-    url.pathname = '/login'
-    return NextResponse.redirect(url)
-  }
+  // if (!session && !publicPaths.includes(url.pathname)) {
+  //   url.pathname = '/login'
+  //   return NextResponse.redirect(url)
+  // }
 
   return NextResponse.next()
 }

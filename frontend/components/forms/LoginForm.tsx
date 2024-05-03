@@ -11,6 +11,16 @@ import { useSearchParams } from 'next/navigation'
 import FormHeader from '@/components/ui/forms/FormHeader'
 import FormFooter from '@/components/ui/forms/FormFooter'
 import ErrorMessage from '@/components/ui/messages/ErrorMessage'
+import { useEffect } from 'react'
+import { AxiosResponse } from 'axios'
+import fairTalkApi from '../../services/service'
+
+type TokenRes = {
+  access_token: string
+  refresh_token: string
+  token_typ: 'Bearer'
+  expires_in: number
+}
 
 type LoginFormSchema = z.infer<typeof loginFormSchema>
 
@@ -27,6 +37,20 @@ const LoginForm: React.FC = () => {
       password: data.password,
       callbackUrl: '/'
     })
+    // const login = async () => {
+    //   try {
+    //     const res: AxiosResponse<TokenRes> =
+    //       await fairTalkApi.authenticateUserAuthTokenPost(
+    //         data.username,
+    //         data.password
+    //       )
+    //     console.log(res)
+    //     return res
+    //   } catch (e) {
+    //     console.log(e)
+    //   }
+    // }
+    // login()
   })
 
   return (
@@ -49,8 +73,8 @@ const LoginForm: React.FC = () => {
           type="text"
           register={register('username')}
           formState={formState}
-          label="Username"
-          placeholder="Email address or username"
+          label="Email"
+          placeholder="Email address"
         />
 
         <TextField

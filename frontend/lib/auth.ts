@@ -1,7 +1,14 @@
 import { AuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { ApiError } from '@/packages/types/api'
-import { getApiClient } from './api'
+import fairTalkApi from '../services/service'
+import { AxiosError, AxiosResponse } from 'axios'
+
+type TokenRes = {
+  access_token: string
+  refresh_token: string
+  token_typ: 'Bearer'
+  expires_in: number
+}
 
 const decodeToken = (
   token: string
@@ -51,13 +58,10 @@ const authOptions: AuthOptions = {
 
       // Refresh token
       if (Date.now() / 1000 > decodeToken(token.access).exp) {
-        const apiClient = await getApiClient()
-        const res = await apiClient.token.tokenRefreshCreate({
-          access: token.access,
-          refresh: token.refresh
-        })
+        const res: AxiosResponse<TokenRes> =
+          await fairTalkApi.refreshAccessTokenAuthRefreshPost(token.access)
 
-        token.access = res.access
+        token.access = res.data.access_token
       }
 
       return { ...token, ...user }
@@ -74,29 +78,28 @@ const authOptions: AuthOptions = {
         password: { label: 'Password', type: 'password' }
       },
       async authorize(credentials) {
+        console.log(credentials, 'credentials')
         if (credentials === undefined) {
           return null
         }
-
         console.log('gg auth.tsx')
         try {
-          const apiClient = await getApiClient()
-          const res = await apiClient.token.tokenCreate({
-            username: credentials.username,
-            password: credentials.password,
-            access: '',
-            refresh: ''
-          })
+          console.log('try')
+          const res: AxiosResponse<TokenRes> =
+            await fairTalkApi.authenticateUserAuthTokenPost(
+              credentials.username,
+              credentials.password
+            )
+          console.log(res, 'res')
           return {
-            id: decodeToken(res.access).user_id,
+            id: decodeToken(res.data.access_token).user_id,
             username: credentials.username,
-            access: res.access,
-            refresh: res.refresh
+            access: res.data.access_token,
+            refresh: res.data.refresh_token
           }
         } catch (error) {
-          if (error instanceof ApiError) {
-            return null
-          }
+          console.log(error, 'error')
+          return null
         }
 
         return null
