@@ -15,7 +15,7 @@ session=sessionLocal(bind=engine)
 
 
 @chat_router.get("/", response_model=List[ChatListRead])
-async def list_chats(db: Session = Depends(get_db), user: User = Depends(get_current_user),):
+async def list_chats(db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     """Retrieves all chats sorted by last updated time."""
     chats = db.query(Chat).filter(Chat.user_id == user.id).order_by(Chat.updated_at.desc()).all()
     return chats
@@ -36,15 +36,17 @@ async def list_messages(chat_id: int, db: Session = Depends(get_db)):
     return db.query(Message).filter(Message.chat_id == chat_id).all()
 
 @chat_router.post("/messages", response_model=List[MessageRead])
-async def post_message(message_data: MessageCreate, chat_id: Optional[int] = None, db: Session = Depends(get_db)):
-    """Creates a message in an existing chat or starts a new chat if chat_id is not provided."""
+async def post_message(message_data: MessageCreate, chat_id: Optional[int] = None, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
     if chat_id is None:
-        # Create a new chat if no chat_id is provided
-        new_chat = Chat()  # Set default title here
+        new_chat = Chat(title="New Chat", user_id=user.id)
         db.add(new_chat)
         db.commit()
         db.refresh(new_chat)
         chat_id = new_chat.id
+    else:
+        chat = db.query(Chat).filter(Chat.id == chat_id, Chat.user_id == user.id).first()
+        if not chat:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access to the specified chat is denied")
     
     # Now proceed with the creation of the message
     message = Message(**message_data.dict(), chat_id=chat_id)

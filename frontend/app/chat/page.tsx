@@ -6,10 +6,7 @@ const Home = () => {
     <>
       <Head>
         <title>FairTalAI</title>
-        <meta
-          name="description"
-          content="A simple chatbot starter kit for OpenAI's chat model using Next.js, TypeScript, and Tailwind CSS."
-        />
+        <meta name="description" content="FairTalAI" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

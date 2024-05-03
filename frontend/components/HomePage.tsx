@@ -3,12 +3,11 @@
 import React from 'react'
 import { useEffect, useRef, useState } from 'react'
 import { Chat } from '@/components/Chat/Chat'
-import { Message } from '../packages/types/api'
+import useGetMessages from '../services/qeueries/useMessages'
 
 const HomePage: React.FC = () => {
-  // const response = use(getReponse())
+  const { data: messagesData, isLoading } = useGetMessages(9)
 
-  const [messages, setMessages] = useState<Message[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -92,7 +91,7 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     scrollToBottom()
-  }, [messages])
+  }, [messagesData])
 
   // useEffect(() => {
   //   if (!response || loading) return
@@ -115,7 +114,7 @@ const HomePage: React.FC = () => {
   return (
     <div className="h-[80vh] flex-1 ">
       <div className="h-full max-w-full mx-auto">
-        <Chat messages={messages} loading={loading} onReset={handleReset} />
+        <Chat messages={messagesData} loading={isLoading} />
         <div ref={messagesEndRef} />
       </div>
     </div>

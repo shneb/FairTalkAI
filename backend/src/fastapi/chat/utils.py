@@ -26,10 +26,11 @@ def estimate_bias(text: str) -> Optional[Dict]:
     Analyzes text for ethical biases and returns detailed bias information.
     """
     prompt = f"""
-    Analyze the following text for potential ethical biases:
+    Analyze the following text for any potential ethical biases and provide a detailed bias report:
     Text: "{text}"
+    Please respond in the following format:
     - Score (0-100): [Bias Score]
-    - Bias Type: [Type of bias]
+    - Bias Type: [Type of bias, e.g., gender, age, racial]
     - Description: [Short explanation of the bias, max 100 characters]
     """
     try:

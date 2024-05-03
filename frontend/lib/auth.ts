@@ -1,7 +1,7 @@
 import { AuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import fairTalkApi from '../services/service'
-import { AxiosError, AxiosResponse } from 'axios'
+import { authApi } from '../services/service'
+import { AxiosResponse } from 'axios'
 
 type TokenRes = {
   access_token: string
@@ -59,7 +59,7 @@ const authOptions: AuthOptions = {
       // Refresh token
       if (Date.now() / 1000 > decodeToken(token.access).exp) {
         const res: AxiosResponse<TokenRes> =
-          await fairTalkApi.refreshAccessTokenAuthRefreshPost(token.access)
+          await authApi.refreshAccessTokenAuthRefreshPost(token.access)
 
         token.access = res.data.access_token
       }
@@ -86,7 +86,7 @@ const authOptions: AuthOptions = {
         try {
           console.log('try')
           const res: AxiosResponse<TokenRes> =
-            await fairTalkApi.authenticateUserAuthTokenPost(
+            await authApi.authenticateUserAuthTokenPost(
               credentials.username,
               credentials.password
             )
@@ -101,8 +101,6 @@ const authOptions: AuthOptions = {
           console.log(error, 'error')
           return null
         }
-
-        return null
       }
     })
   ]

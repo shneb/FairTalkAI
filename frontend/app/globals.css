@@ -13,7 +13,7 @@ body {
 
     background:
       /* Shadow Cover TOP */
-      linear-gradient(white 30%, rgba(255, 255, 255, 0)) center top,
+      linear-gradient(transparent 30%, rgba(255, 255, 255, 0)) center top,
       /* Shadow Cover BOTTOM */
         linear-gradient(rgba(255, 255, 255, 0), white 70%) center bottom,
       /* Shadow TOP */
@@ -55,6 +55,20 @@ body {
     background: var(--scrollbarBG);
   }
   .scroll-shadows::-webkit-scrollbar-thumb {
+    background-color: var(--thumbBG);
+    border-radius: 6px;
+    border: 3px solid var(--scrollbarBG);
+  }
+
+  .scroll-width {
+  }
+  .scroll-width::-webkit-scrollbar {
+    width: 6px;
+  }
+  .scroll-width::-webkit-scrollbar-track {
+    background: var(--scrollbarBG);
+  }
+  .scroll-width::-webkit-scrollbar-thumb {
     background-color: var(--thumbBG);
     border-radius: 6px;
     border: 3px solid var(--scrollbarBG);

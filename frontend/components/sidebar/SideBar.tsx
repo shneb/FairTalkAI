@@ -1,6 +1,6 @@
 'use client'
 
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Dialog, Menu, Transition } from '@headlessui/react'
 import {
   Bars3Icon,
@@ -9,12 +9,15 @@ import {
   XCircleIcon,
   XMarkIcon
 } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, PlusIcon } from '@heroicons/react/20/solid'
+import { ChevronDownIcon, PlusIcon, TrashIcon } from '@heroicons/react/20/solid'
 import clsx from 'clsx'
-import { signOut, useSession } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 import { Button } from '../ui/button'
+import useGetChats from '../../services/qeueries/useChats'
 import { useRouter } from 'next/navigation'
-import axios from 'axios'
+import { ChatListRead } from '../../packages/types/api'
+import { LoadingSpinner } from '../ui/loadingSpinner'
+import { randomUUID as uuidv4 } from 'crypto'
 
 const userNavigation = [
   { name: 'Profile', href: '/profile' },
@@ -25,33 +28,30 @@ const userNavigation = [
 
 function SideBar({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const session = useSession()
+
+  const [chats, setChats] = useState<ChatListRead[]>([])
 
   const router = useRouter()
 
-  //   const apiClient = await getApiClient(sess=ion.data)
+  const { data: chatsData, isLoading } = useGetChats()
 
-  //   const response = apiClient.chats.chatsRetrieve()
-  //   console.log(response)
-  //   return response
-  const getChats = async () => {
-    try {
-      // const apiClient = await getApiClient(session.data)
+  useEffect(() => {
+    if (!chatsData || isLoading) return
 
-      // const response = apiClient.api.apiChatsRetrieve()
+    createChat()
+    setChats(chatsData)
+  }, [chatsData, isLoading])
 
-      const response = await axios.get('http://localhost:8080/', {
-        headers: {
-          Authorization: 'Bearer ' + session.data?.accessToken
-        }
+  const createChat = () => {
+    if (!chats.find((item) => item.id === 9999)) {
+      chats.push({
+        id: 9999,
+        title: 'New new chat',
+        updated_at: ''
       })
-      console.log(response.data)
-      return response
-    } catch (e) {
-      console.log(e)
     }
   }
-  getChats()
+
   return (
     <>
       <div>
@@ -119,7 +119,7 @@ function SideBar({ children }: { children: React.ReactNode }) {
                     <nav className="flex flex-1 flex-col">
                       <ul role="list" className="flex flex-1 flex-col gap-y-7">
                         <li>
-                          <Button>New Chat</Button>
+                          <Button onClick={() => createChat()}>New Chat</Button>
                         </li>
                         <li>
                           <ul role="list" className="-mx-2 space-y-1">
@@ -175,7 +175,10 @@ function SideBar({ children }: { children: React.ReactNode }) {
             <nav className="flex flex-1 flex-col w-full">
               <ul role="list" className="flex flex-1 flex-col gap-y-7 w-full">
                 <li>
-                  <Button className="w-full flex justify-between">
+                  <Button
+                    className="w-full flex justify-between"
+                    onClick={() => createChat()}
+                  >
                     New Chat <PlusIcon className="h-6 w-6 text-gray-50" />
                   </Button>
                 </li>
@@ -184,18 +187,24 @@ function SideBar({ children }: { children: React.ReactNode }) {
                     role="list"
                     className="rounded-lg scroll-shadows flex flex-col gap-3 overflow-y-auto h-[60vh]"
                   >
-                    {/* {chats?.map((item) => (
-                      <li className="w-full" key={item.id}>
-                        <Button
-                          onClick={() => router.push(`/chat/${item.id}`)}
-                          className="w-full flex justify-between"
-                          variant="secondary"
-                        >
-                          {item.chat}
-                          <TrashIcon className="h-5 w-5 text-red-700" />
-                        </Button>
-                      </li>
-                    ))} */}
+                    {isLoading || !chatsData ? (
+                      <div className="flex w-full justify-center h-full items-center">
+                        <LoadingSpinner />
+                      </div>
+                    ) : (
+                      chats.map((item) => (
+                        <li className="w-full" key={item.id}>
+                          <Button
+                            onClick={() => router.push(`/chat/${item.id}`)}
+                            className="w-full flex justify-between"
+                            variant="secondary"
+                          >
+                            {item.title}
+                            <TrashIcon className="h-5 w-5 text-red-700" />
+                          </Button>
+                        </li>
+                      ))
+                    )}
                   </ul>
                 </li>
                 <li className="mt-auto">
