@@ -7,7 +7,7 @@ import { MessageRead } from '../../packages/types/api'
 interface Props {
   messages?: MessageRead[]
   loading: boolean
-  onSend?: (message: MessageRead) => void
+  onSend: (message: MessageRead) => void
 }
 
 export const Chat: FC<Props> = ({ messages, loading, onSend }) => {

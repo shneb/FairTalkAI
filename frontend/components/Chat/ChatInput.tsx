@@ -1,13 +1,12 @@
 'use-client'
 
-import { IconArrowUp } from '@tabler/icons-react'
 import { FC, KeyboardEvent, useEffect, useRef, useState } from 'react'
-import { Message, RoleEnum } from '../../packages/types/api'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
+import { MessageRead } from '../../packages/types/api'
 
 interface Props {
-  onSend?: (message: Message) => void
+  onSend: (message: MessageRead) => void
 }
 
 export const ChatInput: FC<Props> = ({ onSend }) => {
@@ -25,19 +24,19 @@ export const ChatInput: FC<Props> = ({ onSend }) => {
     setContent(value)
   }
 
-  // const handleSend = () => {
-  //   if (!content) {
-  //     alert('Please enter a message')
-  //     return
-  //   }
-  //   onSend({ role: RoleEnum.USER, content })
-  //   setContent('')
-  // }
+  const handleSend = () => {
+    if (!content) {
+      alert('Please enter a message')
+      return
+    }
+    onSend({ role: 'user', content } as MessageRead)
+    setContent('')
+  }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
-      // handleSend()
+      handleSend()
     }
   }
 
@@ -60,7 +59,7 @@ export const ChatInput: FC<Props> = ({ onSend }) => {
         onKeyDown={handleKeyDown}
         type="text"
       />
-      <Button>Send</Button>
+      <Button onClick={handleSend}>Send</Button>
     </div>
   )
 }

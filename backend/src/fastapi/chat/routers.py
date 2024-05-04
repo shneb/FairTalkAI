@@ -37,7 +37,7 @@ async def list_messages(chat_id: int, db: Session = Depends(get_db)):
 
 @chat_router.post("/messages", response_model=List[MessageRead])
 async def post_message(message_data: MessageCreate, chat_id: Optional[int] = None, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
-    if chat_id is None:
+    if chat_id == 9999:
         new_chat = Chat(title="New Chat", user_id=user.id)
         db.add(new_chat)
         db.commit()

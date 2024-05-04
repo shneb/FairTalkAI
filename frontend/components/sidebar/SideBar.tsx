@@ -1,6 +1,6 @@
 'use client'
 
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useContext, useEffect, useState } from 'react'
 import { Dialog, Menu, Transition } from '@headlessui/react'
 import {
   Bars3Icon,
@@ -17,6 +17,7 @@ import useGetChats from '../../services/qeueries/useChats'
 import { useRouter } from 'next/navigation'
 import { ChatListRead } from '../../packages/types/api'
 import { LoadingSpinner } from '../ui/loadingSpinner'
+import { ChatContext } from '../../providers/ChatProvider'
 
 const userNavigation = [
   { name: 'Profile', href: '/profile' },
@@ -27,7 +28,7 @@ const userNavigation = [
 
 function SideBar({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-
+  const { setChatId } = useContext(ChatContext)
   const [chats, setChats] = useState<ChatListRead[]>([])
 
   const router = useRouter()
@@ -51,7 +52,6 @@ function SideBar({ children }: { children: React.ReactNode }) {
         ...chats
       ])
     }
-    console.log(chats)
   }
 
   return (
@@ -193,6 +193,7 @@ function SideBar({ children }: { children: React.ReactNode }) {
                       chats.map((item) => (
                         <li className="w-full" key={item.id}>
                           <Button
+                            onClick={() => setChatId(item.id.toString())}
                             className="w-full flex justify-between"
                             variant="secondary"
                           >

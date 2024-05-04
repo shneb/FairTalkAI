@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { BiasRead, MessageRead } from '../../packages/types/api'
+import { MessageRead } from '../../packages/types/api'
 import clsx from 'clsx'
 
 interface Props {
@@ -15,11 +15,11 @@ export const ChatMessage: FC<Props> = ({ message }) => {
       {message.role === 'assistant' && message.bias && (
         <div
           className={clsx(
-            'min-h-25 flex-col w-full rounded-t-lg pt-3 pb-2 px-4 text-sm bg-slate-800 text-white '
+            'min-h-25 flex-col w-full rounded-t-lg pt-3 pb-2 px-4 text-sm bg-slate-800 text-white'
           )}
         >
           <p className="flex gap-2 items-center">
-            <div
+            <span
               className={clsx('w-3 h-3 rounded-full blur-[1px]', {
                 'bg-green-500': Number(message.bias.score) <= 25,
                 'bg-orange-500':
@@ -29,10 +29,10 @@ export const ChatMessage: FC<Props> = ({ message }) => {
               })}
             />
             {message.bias.score}%{' '}
-            <span className="text-light">{message.bias.type}</span>
+            <span className="text-bold">{message.bias.type}</span>
           </p>
 
-          <p className="text-thin">{message.bias.description}</p>
+          <p className="text-thin ml-5">{message.bias.description}</p>
         </div>
       )}
       <div

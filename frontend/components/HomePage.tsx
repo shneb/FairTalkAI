@@ -1,14 +1,28 @@
 'use client'
 
-import React from 'react'
-import { useEffect, useRef, useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Chat } from '@/components/Chat/Chat'
 import useGetMessages from '../services/qeueries/useMessages'
+import { ChatContext } from '../providers/ChatProvider'
+import { MessageRead } from '../packages/types/api'
+import useSendMessage from '../services/qeueries/useSendMessage'
 
 const HomePage: React.FC = () => {
-  const { data: messagesData, isLoading } = useGetMessages(9)
+  const { chatId } = useContext(ChatContext)
 
-  const [loading, setLoading] = useState<boolean>(false)
+  const [messages, setMessages] = useState<MessageRead[]>([])
+
+  const { data: messagesData, isLoading: isMessagesLoading } = useGetMessages(
+    Number(chatId) || 9999
+  )
+  const { mutate, isPending } = useSendMessage()
+
+  useEffect(() => {
+    if (!messagesData || isMessagesLoading) return
+
+    setMessages(messagesData)
+  }, [])
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
@@ -16,44 +30,31 @@ const HomePage: React.FC = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
-  // const handleSend = async (message: Message) => {
-  //   const updatedMessages = [...messages, message]
+  const handleSend = async (message: MessageRead) => {
+    setMessages([...messages, message])
+    const data = mutate(
+      {
+        chatId: Number(chatId),
+        message
+      },
+      {
+        onSuccess: (res) => {
+          setMessages([...messages, res.data[1]])
+        }
+      }
+    )
 
-  //   setMessages(updatedMessages)
-  //   setLoading(true)
+    console.log(data)
+  }
+  // const reader = data
+  // const decoder = new TextDecoder()
+  // let done = false
+  // let isFirst = true
 
-  //   const response = await fetch('/api/chat', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: JSON.stringify({
-  //       messages: updatedMessages
-  //     })
-  //   })
-
-  //   if (!response.ok) {
-  //     setLoading(false)
-  //     throw new Error(response.statusText)
-  //   }
-
-  //   const data = response.body
-
-  //   if (!data) {
-  //     return
-  //   }
-
-  //   setLoading(false)
-
-  //   const reader = data.getReader()
-  //   const decoder = new TextDecoder()
-  //   let done = false
-  //   let isFirst = true
-
-  //   while (!done) {
-  //     const { value, done: doneReading } = await reader.read()
-  //     done = doneReading
-  //     const chunkValue = decoder.decode(value)
+  // while (!done) {
+  //   const { value, done: doneReading } = await reader.read()
+  //   done = doneReading
+  //   const chunkValue = decoder.decode(value)
 
   //     if (isFirst) {
   //       isFirst = false
@@ -77,44 +78,18 @@ const HomePage: React.FC = () => {
   //   }
   // }
 
-  const handleReset = () => {
-    // setMessages([
-    //   {
-    //     timestamp: 'gg',
-    //     id: '',
-    //     chat: '',
-    //     role: RoleEnum.ASSISTANT,
-    //     content: `Hi there! I'm Chatbot UI, an AI assistant. I can help you with things like answering questions, providing information, and helping with tasks. How can I help you?`
-    //   }
-    // ])
-  }
-
   useEffect(() => {
     scrollToBottom()
-  }, [messagesData])
-
-  // useEffect(() => {
-  //   if (!response || loading) return
-
-  //   if (response.length < 1) {
-  //     setMessages([
-  //       {
-  //         timestamp: 'gg',
-  //         id: '',
-  //         chat: '',
-  //         role: RoleEnum.ASSISTANT,
-  //         content: `Hi there! I'm Chatbot UI, an AI assistant. I can help you with things like answering questions, providing information, and helping with tasks. How can I help you?`
-  //       }
-  //     ])
-  //     return
-  //   }
-  //   setMessages(response)
-  // }, [response])
+  }, [messages])
 
   return (
     <div className="h-[80vh] flex-1 ">
       <div className="h-full max-w-full mx-auto">
-        <Chat messages={messagesData} loading={isLoading} />
+        <Chat
+          messages={messagesData}
+          loading={isMessagesLoading}
+          onSend={handleSend}
+        />
         <div ref={messagesEndRef} />
       </div>
     </div>
