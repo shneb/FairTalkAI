@@ -22,7 +22,7 @@ export interface ChatInterface {
 export const ChatContext = createContext<ChatInterface>({} as ChatInterface)
 
 export const ChatContextProvider: FC<IChatContextProvider> = ({ children }) => {
-  const [chatId, setChatId] = useState<ChatInterface['chatId'] | undefined>()
+  const [chatId, setChatId] = useState<ChatInterface['chatId']>()
 
   useEffect(() => {
     const local = localStorage.getItem('chatId')

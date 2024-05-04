@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const ChatInput: FC<Props> = ({ onSend }) => {
-  const [content, setContent] = useState<string>()
+  const [content, setContent] = useState<string>('') // Initialize with empty string
 
   const textareaRef = useRef<HTMLInputElement>(null)
 
@@ -20,17 +20,17 @@ export const ChatInput: FC<Props> = ({ onSend }) => {
       alert('Message limit is 4000 characters')
       return
     }
-
     setContent(value)
   }
 
   const handleSend = () => {
-    if (!content) {
+    if (!content.trim()) {
+      // Also check for only spaces
       alert('Please enter a message')
       return
     }
     onSend({ role: 'user', content } as MessageRead)
-    setContent('')
+    setContent('') // Clear the input field after sending
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -48,7 +48,7 @@ export const ChatInput: FC<Props> = ({ onSend }) => {
   }, [content])
 
   return (
-    <div className="min-h-[44px] bg-white dark:bg-gray-800 rounded-lg p-4 flex gap-4">
+    <div className=" items-center min-h-[44px] bg-white dark:bg-gray-800 rounded-lg p-4 flex gap-4">
       <Input
         className="flex-1"
         placeholder="Type your message..."

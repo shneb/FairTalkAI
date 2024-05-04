@@ -23,7 +23,13 @@ const userNavigation = [
   { name: 'Profile', href: '/profile' },
   { name: 'Change password', href: '/change-password' },
   { name: 'Delete account', href: '/delete-account' },
-  { name: 'Logout', href: () => signOut() }
+  {
+    name: 'Logout',
+    href: () => {
+      localStorage.clear()
+      signOut()
+    }
+  }
 ]
 
 function SideBar({ children }: { children: React.ReactNode }) {

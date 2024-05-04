@@ -1,50 +1,43 @@
 'use client'
 
-import React, { useContext, useState } from 'react'
-import { useEffect, useRef } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import { Chat } from '@/components/Chat/Chat'
-import useGetMessages from '../services/qeueries/useMessages'
 import { ChatContext } from '../providers/ChatProvider'
 import { MessageRead } from '../packages/types/api'
+import useGetMessages from '../services/qeueries/useMessages'
 import useSendMessage from '../services/qeueries/useSendMessage'
 
 const HomePage: React.FC = () => {
   const { chatId } = useContext(ChatContext)
-
   const [messages, setMessages] = useState<MessageRead[]>([])
-
   const { data: messagesData, isLoading: isMessagesLoading } = useGetMessages(
     Number(chatId) || 9999
   )
-  const { mutate, isPending } = useSendMessage()
+  const { mutateAsync, isPending: isMutating } = useSendMessage()
 
   useEffect(() => {
     if (!messagesData || isMessagesLoading) return
-
     setMessages(messagesData)
-  }, [])
+  }, [messagesData, isMessagesLoading])
 
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
+  useEffect(() => {
+    scrollToBottom() // Scroll to bottom whenever messages change
+  }, [messages])
 
   const handleSend = async (message: MessageRead) => {
-    setMessages([...messages, message])
-    const data = mutate(
-      {
-        chatId: Number(chatId),
-        message
-      },
-      {
-        onSuccess: (res) => {
-          setMessages([...messages, res.data[1]])
-        }
-      }
-    )
-
-    console.log(data)
+    setMessages((currentMessages) => [...currentMessages, message]) // Show user message immediately
+    scrollToBottom()
+    try {
+      const response = await mutateAsync({ chatId: Number(chatId), message })
+    } catch (error) {
+      console.error('Error sending message:', error)
+      // Handle errors here, such as displaying an error message or retry option
+    }
   }
   // const reader = data
   // const decoder = new TextDecoder()
@@ -78,19 +71,15 @@ const HomePage: React.FC = () => {
   //   }
   // }
 
-  useEffect(() => {
-    scrollToBottom()
-  }, [messages])
-
   return (
-    <div className="h-[80vh] flex-1 ">
+    <div className="h-[80vh] flex-1">
       <div className="h-full max-w-full mx-auto">
         <Chat
-          messages={messagesData}
-          loading={isMessagesLoading}
+          messages={messages}
+          loading={isMutating} // Show loader when sending a message
           onSend={handleSend}
+          messagesEndRef={messagesEndRef}
         />
-        <div ref={messagesEndRef} />
       </div>
     </div>
   )
