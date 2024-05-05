@@ -13,7 +13,7 @@ interface ISendMessageReq {
 }
 
 const useSendMessage = () => {
-  const { chatId } = useContext(ChatContext)
+  const { currentChat } = useContext(ChatContext)
 
   const sendMessage = async (
     req: ISendMessageReq
@@ -31,7 +31,7 @@ const useSendMessage = () => {
     mutationFn: sendMessage,
     onSuccess: () => {
       queryClient.refetchQueries({
-        queryKey: [chatId, 'chats', 'messages']
+        queryKey: [currentChat?.id, 'chats', 'messages']
       })
     }
   }

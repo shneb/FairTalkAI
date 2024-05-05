@@ -8,10 +8,10 @@ import useGetMessages from '../services/qeueries/useMessages'
 import useSendMessage from '../services/qeueries/useSendMessage'
 
 const HomePage: React.FC = () => {
-  const { chatId } = useContext(ChatContext)
+  const { currentChat } = useContext(ChatContext)
   const [messages, setMessages] = useState<MessageRead[]>([])
   const { data: messagesData, isLoading: isMessagesLoading } = useGetMessages(
-    Number(chatId) || 9999
+    Number(currentChat?.id) || 9999
   )
   const { mutateAsync, isPending: isMutating } = useSendMessage()
 
@@ -33,7 +33,10 @@ const HomePage: React.FC = () => {
     setMessages((currentMessages) => [...currentMessages, message]) // Show user message immediately
     scrollToBottom()
     try {
-      const response = await mutateAsync({ chatId: Number(chatId), message })
+      const response = await mutateAsync({
+        chatId: Number(currentChat?.id),
+        message
+      })
     } catch (error) {
       console.error('Error sending message:', error)
       // Handle errors here, such as displaying an error message or retry option

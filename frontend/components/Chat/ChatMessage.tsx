@@ -1,12 +1,17 @@
 import { FC } from 'react'
 import { MessageRead } from '../../packages/types/api'
 import clsx from 'clsx'
-
+import { marked } from 'marked'
+import remarkGfm from 'remark-gfm'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import ReactMarkdown from 'react-markdown'
 interface Props {
   message: MessageRead
 }
 
 export const ChatMessage: FC<Props> = ({ message }) => {
+  const htmlText = marked(message.content)
+
   return (
     <div
       style={{ overflowWrap: 'anywhere' }}
@@ -36,14 +41,42 @@ export const ChatMessage: FC<Props> = ({ message }) => {
         </div>
       )}
       <div
-        className={`text-sm flex items-center ${
+        className={`text-sm flex items-center p-4  ${
           message.role === 'assistant'
             ? 'w-full text-left justify-start bg-white dark:bg-gray-800 text-neutral-900 rounded-b-lg px-4 pt-2 pb-4'
             : 'bg-blue-500 text-white rounded-lg'
-        }  p-4`}
-        style={{ overflowWrap: 'anywhere' }}
+        }`}
+        style={{ overflowWrap: 'normal' }}
       >
-        {message.content}
+        {message.role === 'assistant' ? (
+          <ReactMarkdown
+            className="flex flex-col"
+            remarkPlugins={[remarkGfm]}
+            // eslint-disable-next-line react/no-children-prop
+            children={message.content}
+            components={{
+              // @ts-ignore
+              code({ node, inline, className, children, ...props }) {
+                const match = /language-(\w+)/.exec(className || '')
+                return !inline && match ? (
+                  // @ts-ignore
+                  <SyntaxHighlighter
+                    // eslint-disable-next-line react/no-children-prop
+                    children={String(children).replace(/\n$/, '')}
+                    language={match[1]}
+                    {...props}
+                  />
+                ) : (
+                  <code className={className} {...props}>
+                    {children}
+                  </code>
+                )
+              }
+            }}
+          />
+        ) : (
+          message.content
+        )}
       </div>
     </div>
   )

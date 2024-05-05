@@ -22,15 +22,19 @@ def get_openai_response(message_list: list) -> Tuple[Optional[str], Optional[Dic
 
 
 def estimate_bias(text: str) -> Optional[Dict]:
-    """
-    Analyzes text for ethical biases and returns detailed bias information.
-    """
     prompt = f"""
-    Analyze the following text for any potential ethical biases and provide a detailed bias report:
+    Analyze the following text for any potential ethical biases and provide a detailed bias report.
+    Please restrict the type of bias to one of the following categories only:
+    - Gender
+    - Age
+    - Racial
+    - Religiuos
+    - Disability
+    - Other
     Text: "{text}"
     Please respond in the following format:
     - Score (0-100): [Bias Score]
-    - Bias Type: [Type of bias, e.g., gender, age, racial]
+    - Bias Type: [Type of bias, selected from the categories above]
     - Description: [Short explanation of the bias, max 100 characters]
     """
     try:

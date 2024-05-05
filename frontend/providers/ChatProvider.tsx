@@ -10,37 +10,38 @@ import {
   useMemo,
   useState
 } from 'react'
+import { ChatListRead } from '../packages/types/api'
 
 interface IChatContextProvider {
   children: ReactNode
 }
 
 export interface ChatInterface {
-  chatId: string | undefined
-  setChatId: Dispatch<SetStateAction<string | undefined>>
+  currentChat: ChatListRead | undefined
+  setCurrentChat: Dispatch<SetStateAction<ChatListRead | undefined>>
 }
 export const ChatContext = createContext<ChatInterface>({} as ChatInterface)
 
 export const ChatContextProvider: FC<IChatContextProvider> = ({ children }) => {
-  const [chatId, setChatId] = useState<ChatInterface['chatId']>()
+  const [currentChat, setCurrentChat] = useState<ChatInterface['currentChat']>()
 
   useEffect(() => {
-    const local = localStorage.getItem('chatId')
+    const local = localStorage.getItem('currentChat')
     if (!local) return
-    setChatId(JSON.parse(local))
+    setCurrentChat(JSON.parse(local))
   }, [])
 
   useEffect(() => {
-    if (!chatId) return
-    localStorage.setItem('chatId', chatId)
-  }, [chatId])
+    if (!currentChat) return
+    localStorage.setItem('currentChat', JSON.stringify(currentChat))
+  }, [currentChat])
 
   const ChatContextValue = useMemo(
     () => ({
-      chatId,
-      setChatId
+      currentChat,
+      setCurrentChat
     }),
-    [chatId]
+    [currentChat]
   )
   return (
     <ChatContext.Provider value={ChatContextValue}>

@@ -32,9 +32,15 @@ const userNavigation = [
   }
 ]
 
+const newChatObj = {
+  id: 9999,
+  title: 'New new chat',
+  updated_at: ''
+}
+
 function SideBar({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const { setChatId } = useContext(ChatContext)
+  const { setCurrentChat } = useContext(ChatContext)
   const [chats, setChats] = useState<ChatListRead[]>([])
 
   const router = useRouter()
@@ -43,23 +49,19 @@ function SideBar({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!chatsData || isLoading) return
-
     setChats(chatsData)
   }, [chatsData])
 
   const createChat = () => {
     if (!chats.find((item) => item.id === 9999)) {
-      setChats([
-        {
-          id: 9999,
-          title: 'New new chat',
-          updated_at: ''
-        },
-        ...chats
-      ])
+      setChats([newChatObj, ...chats])
+      setCurrentChat(newChatObj)
     }
   }
 
+  useEffect(() => {
+    createChat()
+  }, [])
   return (
     <>
       <div>
@@ -125,27 +127,39 @@ function SideBar({ children }: { children: React.ReactNode }) {
                       </div>
                     </div>
                     <nav className="flex flex-1 flex-col">
-                      <ul role="list" className="flex flex-1 flex-col gap-y-7">
+                      <ul
+                        role="list"
+                        className="flex flex-1 flex-col gap-y-7 w-full"
+                      >
                         <li>
-                          <Button onClick={() => createChat()}>New Chat</Button>
+                          <Button
+                            className="w-full flex justify-between"
+                            onClick={() => createChat()}
+                          >
+                            New Chat{' '}
+                            <PlusIcon className="h-6 w-6 text-gray-50" />
+                          </Button>
                         </li>
                         <li>
                           <ul role="list" className="-mx-2 space-y-1">
-                            <li>
-                              <Button
-                                onClick={() => router.push(`/chat/`)}
-                                className={clsx(
-                                  // item.current
-                                  'bg-gray-50 text-indigo-600',
-                                  'text-gray-700 hover:text-indigo-600 hover:bg-gray-50',
-                                  'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
-                                )}
-                              >
-                                <ChatBubbleLeftEllipsisIcon className="h-5 w-7" />
-                                New Message
-                                <XCircleIcon className="h-5 w-5text-black hover:text-red-700 font-bold" />
-                              </Button>
-                            </li>
+                            {chats && !isLoading ? (
+                              chats.map((item) => (
+                                <li className="w-full" key={item.id}>
+                                  <Button
+                                    onClick={() => setCurrentChat(item)}
+                                    className="w-full flex justify-between"
+                                    variant="secondary"
+                                  >
+                                    {item.title}
+                                    <TrashIcon className="h-5 w-5 text-red-700" />
+                                  </Button>
+                                </li>
+                              ))
+                            ) : (
+                              <div className="flex w-full justify-center h-full items-center">
+                                <LoadingSpinner />
+                              </div>
+                            )}
                           </ul>
                         </li>
                         <li className="mt-auto">
@@ -199,7 +213,7 @@ function SideBar({ children }: { children: React.ReactNode }) {
                       chats.map((item) => (
                         <li className="w-full" key={item.id}>
                           <Button
-                            onClick={() => setChatId(item.id.toString())}
+                            onClick={() => setCurrentChat(item)}
                             className="w-full flex justify-between"
                             variant="secondary"
                           >
