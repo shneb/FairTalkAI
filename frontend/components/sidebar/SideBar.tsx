@@ -4,9 +4,7 @@ import { Fragment, useContext, useEffect, useState } from 'react'
 import { Dialog, Menu, Transition } from '@headlessui/react'
 import {
   Bars3Icon,
-  ChatBubbleLeftEllipsisIcon,
   Cog6ToothIcon,
-  XCircleIcon,
   XMarkIcon
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PlusIcon, TrashIcon } from '@heroicons/react/20/solid'
