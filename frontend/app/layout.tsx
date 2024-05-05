@@ -10,7 +10,7 @@ const roboto = Roboto({
 })
 
 export const metadata: Metadata = {
-  title: 'FairTalkAI - Django & Next.js Bootstrap Template'
+  title: 'FairTalkAI'
 }
 
 const RootLayout = async ({ children }: { children: React.ReactNode }) => {
