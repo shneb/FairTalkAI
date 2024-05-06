@@ -1,5 +1,9 @@
 # FairTalkAI Web Application
 
+## Live Deployment
+
+Explore the live version of FairTalkAI at [shneb.com](https://www.shneb.com). This deployment demonstrates the full functionality of the bias detection tool in action.
+
 ## Overview
 
 FairTalkAI is a full-stack application built using FastAPI, Next.js, and PostgreSQL. It utilizes NextAuth with JWT for authentication, 2Auth0 for added security, React Query for efficient data fetching and caching, and Tailwind CSS for styling. The application leverages OpenAI's API to integrate advanced AI functionalities.
