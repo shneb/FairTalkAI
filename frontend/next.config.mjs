@@ -6,7 +6,7 @@ const cspHeader = `
 	    style-src 'self' 'unsafe-inline';
 	    img-src * blob: data:;
 	    font-src 'self' https://fonts.googleapis.com;
-			connect-src * ${process.env.API_URL};
+			connect-src * ${process.env.NEXT_PUBLIC_API_URL};
 			frame-src 'self';
 			media-src 'self';
 `

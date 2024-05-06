@@ -9,11 +9,11 @@ import { getSession } from 'next-auth/react'
 // Assuming your types and classes are correctly exported
 
 const axiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8080' // Update to match your actual API's baseURL
+  baseURL: process.env.NEXT_PUBLIC_API_URL // Update to match your actual API's baseURL
 })
 
 const configuration = new Configuration({
-  basePath: 'http://127.0.0.1:8080'
+  basePath: process.env.NEXT_PUBLIC_API_URL
 })
 
 axiosInstance.interceptors.request.use(async (config) => {

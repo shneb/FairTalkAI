@@ -59,7 +59,6 @@ Create a `.env.backend` file in the root directory with the following environmen
 
 ```
 DEBUG=1
-SECRET_KEY=<your-secret-key>
 OPENAI_API_KEY=<your-openai-api-key>
 POSTGRES_USER=<db-user>
 POSTGRES_PASSWORD=<db-password>
@@ -76,7 +75,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES=120
 Create a `.env.frontend` file in the root directory with the following environment variables:
 
 ```
-API_URL=http://localhost:8080
+NEXT_PUBLIC_API_URL=http://localhost:8080
 NEXTAUTH_URL=http://localhost:3000/api/auth
 NEXTAUTH_SECRET=<nextauth-secret>
 ```

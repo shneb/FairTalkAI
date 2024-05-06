@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "generate": "openapi-generator-cli generate --input-spec http://localhost:8080/openapi.json --generator-name typescript-axios  --output ./packages/types/api  --additional-properties modelPropertyNaming=original,typescriptThreePlus=true"
+    "generate": "openapi-generator-cli generate --input-spec http://fair-talk-ai.azurewebsites.net/openapi.json --generator-name typescript-axios  --output ./packages/types/api  --additional-properties modelPropertyNaming=original,typescriptThreePlus=true"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.19",
