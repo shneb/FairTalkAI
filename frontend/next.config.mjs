@@ -14,7 +14,8 @@ const cspHeader = `
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    serverActions: true
+    serverActions: true,
+    missingSuspenseWithCSRBailout: false
   },
   rewrites: async () => [
     {
