@@ -8,7 +8,7 @@ import useGetMessages from '../services/qeueries/useMessages'
 import useSendMessage from '../services/qeueries/useSendMessage'
 
 const HomePage: React.FC = () => {
-  const { currentChat } = useContext(ChatContext)
+  const { currentChat, setCurrentChat } = useContext(ChatContext)
   const [messages, setMessages] = useState<MessageRead[]>([])
   const { data: messagesData, isLoading: isMessagesLoading } = useGetMessages(
     Number(currentChat?.id) || 9999
@@ -17,6 +17,7 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     if (!messagesData || isMessagesLoading) return
+
     setMessages(messagesData)
   }, [messagesData, isMessagesLoading])
 
@@ -33,46 +34,32 @@ const HomePage: React.FC = () => {
     setMessages((currentMessages) => [...currentMessages, message]) // Show user message immediately
     scrollToBottom()
     try {
-      const response = await mutateAsync({
-        chatId: Number(currentChat?.id),
-        message
-      })
+      const response = await mutateAsync(
+        {
+          chatId: Number(currentChat?.id),
+          message
+        },
+        {
+          onSuccess: (res) => {
+            if (currentChat?.id === 9999 && res.data) {
+              setCurrentChat({
+                id: res.data[0].chat_id,
+                title: 'Newest chat',
+                updated_at: ''
+              })
+            }
+          }
+        }
+      )
+      const aiRes = response.data.find((item) => item.role === 'assistant')
+      if (aiRes) {
+        setMessages((currentMessages) => [...currentMessages, aiRes])
+      }
     } catch (error) {
       console.error('Error sending message:', error)
       // Handle errors here, such as displaying an error message or retry option
     }
   }
-  // const reader = data
-  // const decoder = new TextDecoder()
-  // let done = false
-  // let isFirst = true
-
-  // while (!done) {
-  //   const { value, done: doneReading } = await reader.read()
-  //   done = doneReading
-  //   const chunkValue = decoder.decode(value)
-
-  //     if (isFirst) {
-  //       isFirst = false
-  //       setMessages((messages) => [
-  //         ...messages,
-  //         {
-  //           role: 'assistant',
-  //           content: chunkValue
-  //         }
-  //       ])
-  //     } else {
-  //       setMessages((messages) => {
-  //         const lastMessage = messages[messages.length - 1]
-  //         const updatedMessage = {
-  //           ...lastMessage,
-  //           content: lastMessage.content + chunkValue
-  //         }
-  //         return [...messages.slice(0, -1), updatedMessage]
-  //       })
-  //     }
-  //   }
-  // }
 
   return (
     <div className="h-[80vh] flex-1">

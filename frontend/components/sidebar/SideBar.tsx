@@ -7,7 +7,12 @@ import {
   Cog6ToothIcon,
   XMarkIcon
 } from '@heroicons/react/24/outline'
-import { ChevronDownIcon, PlusIcon, TrashIcon } from '@heroicons/react/20/solid'
+import {
+  ChevronDownIcon,
+  PlusIcon,
+  XCircleIcon,
+  TrashIcon
+} from '@heroicons/react/20/solid'
 import clsx from 'clsx'
 import { signOut } from 'next-auth/react'
 import { Button } from '../ui/button'
@@ -16,6 +21,7 @@ import { useRouter } from 'next/navigation'
 import { ChatListRead } from '../../packages/types/api'
 import { LoadingSpinner } from '../ui/loadingSpinner'
 import { ChatContext } from '../../providers/ChatProvider'
+import useDeleteMessage from '../../services/qeueries/useDeleteMessage'
 
 const userNavigation = [
   { name: 'Profile', href: '/profile' },
@@ -40,10 +46,11 @@ function SideBar({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const { setCurrentChat } = useContext(ChatContext)
   const [chats, setChats] = useState<ChatListRead[]>([])
+  const { mutate } = useDeleteMessage()
 
   const router = useRouter()
 
-  const { data: chatsData, isLoading } = useGetChats()
+  const { data: chatsData, isLoading, refetch: refetchChats } = useGetChats()
 
   useEffect(() => {
     if (!chatsData || isLoading) return
@@ -60,6 +67,16 @@ function SideBar({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     createChat()
   }, [])
+
+  const handleDeleteChat = (chatId: number) => {
+    mutate(
+      { chatId },
+      {
+        onSuccess: () => refetchChats()
+      }
+    )
+  }
+
   return (
     <>
       <div>
@@ -138,18 +155,25 @@ function SideBar({ children }: { children: React.ReactNode }) {
                             <PlusIcon className="h-6 w-6 text-gray-50" />
                           </Button>
                         </li>
+                        <p className="">Chat history</p>
                         <li>
                           <ul role="list" className="-mx-2 space-y-1">
                             {chats && !isLoading ? (
                               chats.map((item) => (
-                                <li className="w-full" key={item.id}>
+                                <li className="w-full flex" key={item.id}>
                                   <Button
                                     onClick={() => setCurrentChat(item)}
-                                    className="w-full flex justify-between"
+                                    className="w-full flex justify-between rounded-r-none"
                                     variant="secondary"
                                   >
                                     {item.title}
-                                    <TrashIcon className="h-5 w-5 text-red-700" />
+                                  </Button>
+                                  <Button
+                                    onClick={() => handleDeleteChat(item.id)}
+                                    className="!rounded-l-none group hover:bg-red-800"
+                                    variant="secondary"
+                                  >
+                                    <XCircleIcon className="h-4 w-4 text-red-700 group-hover:text-white" />
                                   </Button>
                                 </li>
                               ))
@@ -202,6 +226,7 @@ function SideBar({ children }: { children: React.ReactNode }) {
                     New Chat <PlusIcon className="h-6 w-6 text-gray-50" />
                   </Button>
                 </li>
+                <p className="font-normal">Chat history</p>
                 <li className="w-full h-full">
                   <ul
                     role="list"
@@ -209,14 +234,20 @@ function SideBar({ children }: { children: React.ReactNode }) {
                   >
                     {chats && !isLoading ? (
                       chats.map((item) => (
-                        <li className="w-full" key={item.id}>
+                        <li className="w-full flex" key={item.id}>
                           <Button
                             onClick={() => setCurrentChat(item)}
-                            className="w-full flex justify-between"
+                            className="w-full flex justify-between rounded-r-none"
                             variant="secondary"
                           >
                             {item.title}
-                            <TrashIcon className="h-5 w-5 text-red-700" />
+                          </Button>
+                          <Button
+                            onClick={() => handleDeleteChat(item.id)}
+                            className="!rounded-l-none group hover:bg-red-800"
+                            variant="secondary"
+                          >
+                            <XCircleIcon className="h-4 w-4 text-red-700 group-hover:text-white" />
                           </Button>
                         </li>
                       ))
