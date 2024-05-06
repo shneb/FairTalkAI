@@ -1,7 +1,6 @@
 'use client'
 
 import { RegisterFormSchema, RegisterAction } from '@/actions/registerAction'
-import { fieldApiError } from '@/lib/forms'
 import { registerFormSchema } from '@/lib/validation'
 import SubmitField from '@/components/ui/forms/SubmitField'
 import TextField from '@/components/ui/forms/TextField'
@@ -14,10 +13,9 @@ import { useForm } from 'react-hook-form'
 const RegisterForm: React.FC<{
   onSubmitHandler: RegisterAction
 }> = ({ onSubmitHandler }) => {
-  const { formState, handleSubmit, register, setError } =
-    useForm<RegisterFormSchema>({
-      resolver: zodResolver(registerFormSchema)
-    })
+  const { formState, handleSubmit, register } = useForm<RegisterFormSchema>({
+    resolver: zodResolver(registerFormSchema)
+  })
 
   return (
     <>
@@ -33,10 +31,6 @@ const RegisterForm: React.FC<{
 
           if (res === true) {
             signIn()
-          } else if (typeof res !== 'boolean') {
-            fieldApiError('username', 'username', res, setError)
-            fieldApiError('password', 'password', res, setError)
-            fieldApiError('password_retype', 'passwordRetype', res, setError)
           }
         })}
       >

@@ -53,23 +53,6 @@ export const Navbar: FC = () => {
           {session.status === 'authenticated' && (
             <>
               <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem>
-                  <Link href="/profile" className="w-full h-full">
-                    <span>Profile</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/change-password" className="w-full h-full">
-                    <span>Change password</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href="/delete-account" className="w-full h-full">
-                    <span>Delete account</span>
-                  </Link>
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
             </>
           )}
           <DropdownMenuSeparator />

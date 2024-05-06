@@ -10,8 +10,7 @@ import {
 import {
   ChevronDownIcon,
   PlusIcon,
-  XCircleIcon,
-  TrashIcon
+  XCircleIcon
 } from '@heroicons/react/20/solid'
 import clsx from 'clsx'
 import { signOut } from 'next-auth/react'
@@ -24,9 +23,6 @@ import { ChatContext } from '../../providers/ChatProvider'
 import useDeleteMessage from '../../services/qeueries/useDeleteMessage'
 
 const userNavigation = [
-  { name: 'Profile', href: '/profile' },
-  { name: 'Change password', href: '/change-password' },
-  { name: 'Delete account', href: '/delete-account' },
   {
     name: 'Logout',
     href: () => {

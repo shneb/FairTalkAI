@@ -1,5 +1,10 @@
 import axios from 'axios'
-import { AuthApi, ChatsApi, Configuration } from '../packages/types/api'
+import {
+  AuthApi,
+  ChatsApi,
+  Configuration,
+  UserApi
+} from '../packages/types/api'
 import { getSession } from 'next-auth/react'
 // Assuming your types and classes are correctly exported
 
@@ -22,5 +27,6 @@ axiosInstance.interceptors.request.use(async (config) => {
 
 const fairTalkApi = new ChatsApi(configuration, undefined, axiosInstance)
 const authApi = new AuthApi(configuration, undefined, axiosInstance)
+const usersApi = new UserApi(configuration, undefined, axiosInstance)
 
-export { fairTalkApi, authApi }
+export { fairTalkApi, authApi, usersApi }

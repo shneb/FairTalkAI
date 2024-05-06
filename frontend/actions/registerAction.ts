@@ -2,29 +2,30 @@
 
 import { z } from 'zod'
 import { registerFormSchema } from '@/lib/validation'
-import { ApiError, UserCreateError } from '@/packages/types/api'
-import { getApiClient } from '@/services/service'
+import { usersApi } from '@/services/service'
+import { SignUpModal } from '../packages/types/api'
+import { v4 as uuid } from 'uuid'
+import { AxiosError } from 'axios'
 
 export type RegisterFormSchema = z.infer<typeof registerFormSchema>
 
 export type RegisterAction = (
   data: RegisterFormSchema
-) => Promise<UserCreateError | boolean>
+) => Promise<SignUpModal | boolean>
 
 const registerAction: RegisterAction = async (data) => {
   try {
-    const apiClient = await getApiClient()
-
-    apiClient.users.usersCreate({
+    usersApi.signupUsersSignupPost({
+      id: Math.floor(Math.random() * 99999),
       username: data.username,
-      password: data.password,
-      password_retype: data.passwordRetype
+      email: data.username,
+      password: data.password
     })
 
     return true
   } catch (error) {
-    if (error instanceof ApiError) {
-      return error.body as UserCreateError
+    if (error instanceof AxiosError) {
+      return false
     }
   }
 

@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const ChatInput: FC<Props> = ({ onSend }) => {
-  const [content, setContent] = useState<string>('') // Initialize with empty string
+  const [content, setContent] = useState<string>('')
 
   const textareaRef = useRef<HTMLInputElement>(null)
 
@@ -25,12 +25,11 @@ export const ChatInput: FC<Props> = ({ onSend }) => {
 
   const handleSend = () => {
     if (!content.trim()) {
-      // Also check for only spaces
       alert('Please enter a message')
       return
     }
     onSend({ role: 'user', content } as MessageRead)
-    setContent('') // Clear the input field after sending
+    setContent('')
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
