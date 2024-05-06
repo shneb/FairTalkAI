@@ -30,6 +30,7 @@ const authOptions: AuthOptions = {
   pages: {
     signIn: '/login'
   },
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     session: async ({ session, token }) => {
       const access = decodeToken(token.access)
