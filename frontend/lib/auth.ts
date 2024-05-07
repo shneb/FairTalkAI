@@ -23,7 +23,7 @@ const decodeToken = (
 }
 
 const authOptions: AuthOptions = {
-  debug: true,
+  debug: false,
   session: {
     strategy: 'jwt'
   },
