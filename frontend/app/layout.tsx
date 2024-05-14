@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Roboto } from 'next/font/google'
 import './globals.css'
 import ReactQueryProvider from '../providers/ReactQueryProvider'
+import { Analytics } from '@vercel/analytics/react'
 
 const roboto = Roboto({
   subsets: ['latin'],
@@ -18,6 +19,7 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
     <html lang="en">
       <body className={roboto.className}>
         <ReactQueryProvider>
+          <Analytics />
           <AuthProvider>{children}</AuthProvider>
         </ReactQueryProvider>
       </body>
